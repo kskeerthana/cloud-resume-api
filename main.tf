@@ -38,10 +38,10 @@ resource "aws_lambda_function" "resume_serverless_Api" {
   filename = "${path.module}/lambda-function/resume-fetch.zip"
   source_code_hash = filebase64sha256("${path.module}/lambda-function/resume-fetch.zip")
   environment {
-  variables = {
-  DYNAMODB_TABLE = aws_dynamodb_table.resume_table.name
-  }
-  }
+    variables = {
+        DYNAMODB_TABLE = aws_dynamodb_table.resume_table.name
+        }
+    }
 }
 
 resource "aws_iam_role" "lambda_exec_role" {
@@ -132,4 +132,7 @@ resource "aws_lambda_permission" "api_gateway" {
 
 output "api_id" {
   value = aws_api_gateway_rest_api.resume_api.id
+}
+output "api_gateway_url" {
+  value = "https://${aws_api_gateway_rest_api.resume_api.id}.execute-api.us-east-1.amazonaws.com/${aws_api_gateway_deployment.api_deployment.stage_name}/resume"
 }
